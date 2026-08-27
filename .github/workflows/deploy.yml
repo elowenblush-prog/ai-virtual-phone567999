@@ -1,4 +1,4 @@
-name: Deploy Flutter Web to GitHub Pages
+name: Deploy Next.js to GitHub Pages
 
 on:
   push:
@@ -20,22 +20,22 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v4
 
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          flutter-version: '3.24.0'
-          channel: 'stable'
+          node-version: 22
+          cache: 'npm'
 
-      - name: Flutter install dependencies
-        run: flutter pub get
+      - name: Install dependencies
+        run: npm ci
 
-      - name: Build Flutter web
-        run: flutter build web --base-href "/ai-virtual-phone567999/"
+      - name: Build static export
+        run: npm run build
 
       - name: Upload build artifacts
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./build/web
+          path: ./out
 
   deploy:
     environment:
